@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Vastra – Luxury Fashion for Every Occasion. Discover premium clothing for men, women, and accessories." />
+  <title>Vastra – Redefine Your Style</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ===== LOADING OVERLAY ===== -->
+  <div id="loader" class="loader-overlay">
+    <div class="loader-content">
+      <span class="loader-logo">Vastra</span>
+      <div class="loader-bar"><div class="loader-bar-fill"></div></div>
+    </div>
+  </div>
+
+  <!-- ===== SCROLL PROGRESS INDICATOR ===== -->
+  <div id="scrollProgress" class="scroll-progress"></div>
+
+  <!-- ===== BACK TO TOP BUTTON ===== -->
+  <button id="backToTop" class="back-to-top" aria-label="Back to top">
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"></polyline></svg>
+  </button>
+
+  <!-- ===== NOTIFICATION TOAST ===== -->
+  <div id="toast" class="toast" aria-live="polite">
+    <span class="toast-icon">🛍️</span>
+    <span id="toastMsg">Item added to cart!</span>
+  </div>
+
+  <!-- ===== CART SIDEBAR ===== -->
+  <div id="cartOverlay" class="cart-overlay"></div>
+  <aside id="cartSidebar" class="cart-sidebar">
+    <div class="cart-header">
+      <h2 class="cart-title">Your Cart</h2>
+      <button id="closeCart" class="cart-close" aria-label="Close cart">✕</button>
+    </div>
+    <div id="cartItems" class="cart-items"></div>
+    <div class="cart-footer">
+      <div class="cart-total">
+        <span>Total</span>
+        <span id="cartTotal">₹0</span>
+      </div>
+      <button class="btn-primary btn-full">Checkout</button>
+    </div>
+  </aside>
+
+  <!-- ===== QUICK VIEW MODAL ===== -->
+  <div id="modalOverlay" class="modal-overlay">
+    <div id="quickViewModal" class="quick-view-modal">
+      <button id="closeModal" class="modal-close" aria-label="Close modal">✕</button>
+      <div class="modal-content">
+        <div class="modal-img-wrap">
+          <img id="modalImg" src="" alt="" />
+        </div>
+        <div class="modal-info">
+          <span id="modalCategory" class="modal-category"></span>
+          <h2 id="modalName" class="modal-name"></h2>
+          <p id="modalPrice" class="modal-price"></p>
+          <p id="modalDesc" class="modal-desc"></p>
+          <button id="modalAddCart" class="btn-primary btn-full">Add to Cart</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== NAVIGATION ===== -->
+  <header id="navbar" class="navbar">
+    <div class="container navbar-inner">
+      <!-- Logo -->
+      <a href="#home" class="logo" aria-label="Vastra Home">Vastra</a>
+
+      <!-- Desktop Nav Links -->
+      <nav class="nav-links" id="navLinks">
+        <a href="#home" class="nav-link active">Home</a>
+        <a href="#shop" class="nav-link">Shop</a>
+        <a href="#categories" class="nav-link">Categories</a>
+        <a href="#about" class="nav-link">About</a>
+        <a href="#contact" class="nav-link">Contact</a>
+      </nav>
+
+      <!-- Nav Actions -->
+      <div class="nav-actions">
+        <!-- Dark Mode Toggle -->
+        <button id="darkModeToggle" class="icon-btn" aria-label="Toggle dark mode">
+          <svg id="sunIcon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+          <svg id="moonIcon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+        </button>
+
+        <!-- Search -->
+        <button class="icon-btn" id="searchBtn" aria-label="Search">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        </button>
+
+        <!-- Cart -->
+        <button class="icon-btn cart-btn" id="cartBtn" aria-label="Shopping cart">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+          <span id="cartCount" class="cart-count">0</span>
+        </button>
+
+        <!-- Hamburger -->
+        <button class="hamburger" id="hamburger" aria-label="Menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Search Bar -->
+    <div id="searchBar" class="search-bar">
+      <div class="container">
+        <input type="text" id="searchInput" placeholder="Search for products…" class="search-input" />
+        <button id="searchClose" class="search-close-btn">✕</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ===== HERO SECTION ===== -->
+    <section id="home" class="hero">
+      <div class="hero-bg">
+        <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1920&q=80" alt="Luxury fashion hero" class="hero-img" />
+        <div class="hero-overlay"></div>
+      </div>
+      <div class="hero-content">
+        <p class="hero-eyebrow reveal-up">New Collection 2026</p>
+        <h1 class="hero-heading reveal-up delay-1">Redefine<br /><em>Your Style</em></h1>
+        <p class="hero-subheading reveal-up delay-2">Luxury Fashion for Every Occasion</p>
+        <div class="hero-cta reveal-up delay-3">
+          <a href="#shop" class="btn-primary ripple">Shop Now</a>
+          <a href="#categories" class="btn-ghost">Explore Collections</a>
+        </div>
+      </div>
+      <div class="hero-scroll-indicator">
+        <span></span>
+      </div>
+    </section>
+
+    <!-- ===== MARQUEE STRIP ===== -->
+    <div class="marquee-strip">
+      <div class="marquee-track">
+        <span>New Arrivals</span><span class="dot">✦</span>
+        <span>Exclusive Designs</span><span class="dot">✦</span>
+        <span>Luxury Collection</span><span class="dot">✦</span>
+        <span>Free Shipping</span><span class="dot">✦</span>
+        <span>New Arrivals</span><span class="dot">✦</span>
+        <span>Exclusive Designs</span><span class="dot">✦</span>
+        <span>Luxury Collection</span><span class="dot">✦</span>
+        <span>Free Shipping</span><span class="dot">✦</span>
+      </div>
+    </div>
+
+    <!-- ===== FEATURED CATEGORIES ===== -->
+    <section id="categories" class="section categories-section">
+      <div class="container">
+        <div class="section-header reveal">
+          <span class="section-eyebrow">Explore</span>
+          <h2 class="section-title">Shop by Category</h2>
+        </div>
+        <div class="categories-grid">
+          <div class="category-card reveal" data-filter="men">
+            <div class="category-img-wrap">
+              <img src="https://images.unsplash.com/photo-1617137968427-85924c800a22?w=600&q=80" alt="Men's Fashion" loading="lazy" />
+              <div class="category-overlay">
+                <span>Shop Men →</span>
+              </div>
+            </div>
+            <div class="category-label">
+              <h3>Men</h3>
+              <p>Sophisticated Classics</p>
+            </div>
+          </div>
+          <div class="category-card reveal delay-1" data-filter="women">
+            <div class="category-img-wrap">
+              <img src="https://images.unsplash.com/photo-1581044777550-4cfa60707c03?w=600&q=80" alt="Women's Fashion" loading="lazy" />
+              <div class="category-overlay">
+                <span>Shop Women →</span>
+              </div>
+            </div>
+            <div class="category-label">
+              <h3>Women</h3>
+              <p>Elegant & Bold</p>
+            </div>
+          </div>
+          <div class="category-card reveal delay-2" data-filter="accessories">
+            <div class="category-img-wrap">
+              <img src="https://images.unsplash.com/photo-1509631179647-0177331693ae?w=600&q=80" alt="Fashion Accessories" loading="lazy" />
+              <div class="category-overlay">
+                <span>Shop Accessories →</span>
+              </div>
+            </div>
+            <div class="category-label">
+              <h3>Accessories</h3>
+              <p>The Finishing Touch</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== PRODUCTS SECTION ===== -->
+    <section id="shop" class="section products-section">
+      <div class="container">
+        <div class="section-header reveal">
+          <span class="section-eyebrow">Collection</span>
+          <h2 class="section-title">Featured Products</h2>
+          <p class="section-subtitle">Handpicked styles curated for the modern wardrobe</p>
+        </div>
+
+        <!-- Filter Bar -->
+        <div class="filter-bar reveal">
+          <button class="filter-btn active" data-filter="all">All</button>
+          <button class="filter-btn" data-filter="men">Men</button>
+          <button class="filter-btn" data-filter="women">Women</button>
+          <button class="filter-btn" data-filter="accessories">Accessories</button>
+        </div>
+
+        <!-- Product Grid -->
+        <div id="productsGrid" class="products-grid"></div>
+      </div>
+    </section>
+
+    <!-- ===== ABOUT SECTION ===== -->
+    <section id="about" class="section about-section">
+      <div class="container about-inner">
+        <div class="about-img-col reveal-left">
+          <div class="about-img-frame">
+            <img src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=700&q=80" alt="About Vastra – premium fashion brand" loading="lazy" />
+            <div class="about-img-accent"></div>
+          </div>
+        </div>
+        <div class="about-text-col reveal-right">
+          <span class="section-eyebrow">Our Story</span>
+          <h2 class="section-title">Where Tradition Meets<br /><em>Modern Fashion</em></h2>
+          <p class="about-desc">
+            Vastra blends tradition with contemporary fashion, creating pieces that honour the rich textile heritage of India while embracing global design sensibilities. Each garment is thoughtfully crafted to celebrate the intersection of culture, craftsmanship, and couture.
+          </p>
+          <p class="about-desc">
+            Founded with a passion for sustainable luxury, every Vastra piece is made with ethically sourced fabrics and produced by artisan communities across the country.
+          </p>
+          <div class="about-stats">
+            <div class="stat">
+              <span class="stat-num">12+</span>
+              <span class="stat-label">Years of Craft</span>
+            </div>
+            <div class="stat">
+              <span class="stat-num">50K+</span>
+              <span class="stat-label">Happy Customers</span>
+            </div>
+            <div class="stat">
+              <span class="stat-num">200+</span>
+              <span class="stat-label">Unique Designs</span>
+            </div>
+          </div>
+          <a href="#shop" class="btn-primary ripple">Discover The Collection</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== TESTIMONIALS SECTION ===== -->
+    <section class="section testimonials-section">
+      <div class="container">
+        <div class="section-header reveal">
+          <span class="section-eyebrow">Reviews</span>
+          <h2 class="section-title">What Our Customers Say</h2>
+        </div>
+        <div class="testimonials-carousel-wrap">
+          <div class="testimonials-carousel" id="testimonialsCarousel">
+            <div class="testimonial-card">
+              <div class="stars">★★★★★</div>
+              <p class="testimonial-text">"Vastra has completely redefined my wardrobe. The fabrics are incredibly luxurious and every piece fits perfectly. I've never received so many compliments!"</p>
+              <div class="testimonial-author">
+                <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&q=80" alt="Priya Sharma" />
+                <div>
+                  <strong>Priya Sharma</strong>
+                  <span>Fashion Blogger, Mumbai</span>
+                </div>
+              </div>
+            </div>
+            <div class="testimonial-card">
+              <div class="stars">★★★★★</div>
+              <p class="testimonial-text">"The blend of traditional aesthetics with modern cuts is unmatched. Vastra understands what modern Indian fashion should feel like — refined and rooted."</p>
+              <div class="testimonial-author">
+                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&q=80" alt="Arjun Mehta" />
+                <div>
+                  <strong>Arjun Mehta</strong>
+                  <span>Architect, Delhi</span>
+                </div>
+              </div>
+            </div>
+            <div class="testimonial-card">
+              <div class="stars">★★★★★</div>
+              <p class="testimonial-text">"From the packaging to the fabric quality — everything screams premium. My kurta set from Vastra is my go-to for every occasion. Absolutely stunning craftsmanship."</p>
+              <div class="testimonial-author">
+                <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?w=80&q=80" alt="Aisha Khan" />
+                <div>
+                  <strong>Aisha Khan</strong>
+                  <span>Event Stylist, Bangalore</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="carousel-controls">
+            <button class="carousel-btn" id="prevBtn" aria-label="Previous review">‹</button>
+            <div class="carousel-dots" id="carouselDots"></div>
+            <button class="carousel-btn" id="nextBtn" aria-label="Next review">›</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== NEWSLETTER SECTION ===== -->
+    <section id="contact" class="section newsletter-section">
+      <div class="container">
+        <div class="newsletter-inner reveal">
+          <span class="section-eyebrow" style="color:#c8a96a">Stay in Style</span>
+          <h2 class="section-title" style="color:#fff">Get Exclusive Offers &<br />New Arrivals First</h2>
+          <p class="newsletter-sub">Subscribe to our newsletter and never miss a style moment.</p>
+          <form id="newsletterForm" class="newsletter-form" novalidate>
+            <div class="newsletter-input-wrap">
+              <input type="email" id="emailInput" placeholder="Enter your email address" class="newsletter-input" required />
+              <button type="submit" class="btn-gold ripple">Subscribe</button>
+            </div>
+            <p id="formMsg" class="form-message"></p>
+          </form>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <a href="#home" class="logo footer-logo">Vastra</a>
+        <p class="footer-tagline">Luxury Fashion for Every Occasion</p>
+        <div class="social-links">
+          <a href="#" class="social-link" aria-label="Instagram">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+          </a>
+          <a href="#" class="social-link" aria-label="Facebook">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+          </a>
+          <a href="#" class="social-link" aria-label="Twitter / X">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg>
+          </a>
+          <a href="#" class="social-link" aria-label="Pinterest">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 12a4 4 0 1 0 8 0 4 4 0 0 0-8 0"></path><path d="M12 2C6.48 2 2 6.48 2 12c0 4.24 2.65 7.86 6.39 9.29-.09-.78-.17-1.98.04-2.83.18-.76 1.22-5.16 1.22-5.16s-.31-.63-.31-1.56c0-1.46.85-2.55 1.9-2.55.9 0 1.34.67 1.34 1.48 0 .9-.58 2.26-.87 3.51-.25 1.05.52 1.9 1.55 1.9 1.86 0 3.11-2.4 3.11-5.24 0-2.16-1.46-3.83-4.14-3.83-3.02 0-4.91 2.26-4.91 4.79 0 .78.23 1.33.59 1.76.16.2.19.28.13.51-.04.17-.14.56-.18.72-.06.23-.24.31-.44.23-1.23-.5-1.8-1.86-1.8-3.37 0-2.98 2.53-6.61 7.55-6.61 4.06 0 6.74 2.96 6.74 6.14 0 4.22-2.33 7.36-5.78 7.36-1.16 0-2.25-.63-2.62-1.34l-.75 2.9c-.24.93-.73 1.86-1.16 2.59.95.28 1.95.43 2.99.43 5.52 0 10-4.48 10-10S17.52 2 12 2z"></path></svg>
+          </a>
+        </div>
+      </div>
+      <div class="footer-links-grid">
+        <div class="footer-col">
+          <h4>Shop</h4>
+          <ul>
+            <li><a href="#shop">New Arrivals</a></li>
+            <li><a href="#shop">Men's Collection</a></li>
+            <li><a href="#shop">Women's Collection</a></li>
+            <li><a href="#shop">Accessories</a></li>
+            <li><a href="#shop">Sale</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Company</h4>
+          <ul>
+            <li><a href="#about">Our Story</a></li>
+            <li><a href="#">Sustainability</a></li>
+            <li><a href="#">Careers</a></li>
+            <li><a href="#">Press</a></li>
+            <li><a href="#">Artisans</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Help</h4>
+          <ul>
+            <li><a href="#">FAQ</a></li>
+            <li><a href="#">Shipping Policy</a></li>
+            <li><a href="#">Returns</a></li>
+            <li><a href="#">Size Guide</a></li>
+            <li><a href="#contact">Contact Us</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="container">
+        <p>© 2026 Vastra. All rights reserved. Crafted with ♥ in India.</p>
+        <div class="footer-legal">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
